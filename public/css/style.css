@@ -1,0 +1,15 @@
+/* Styles pour la page Retraits */
+.withdraw-form { text-align: left; margin-bottom: 30px; }
+.withdraw-form label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9rem; }
+.withdraw-form input, .withdraw-form select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; }
+
+.history-item { 
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 10px; border-bottom: 1px solid #eee; font-size: 0.85rem; 
+}
+
+/* Couleurs des statuts */
+.status { padding: 4px 8px; border-radius: 5px; font-size: 0.75rem; font-weight: bold; }
+.pending { background: #fff3e0; color: #ef6c00; }  /* Orange pour Attente */
+.validated { background: #e8f5e9; color: #2e7d32; } /* Vert pour Validé */
+.rejected { background: #ffebee; color: #c62828; }  /* Rouge pour Rejeté */
