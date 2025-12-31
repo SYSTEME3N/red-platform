@@ -1,0 +1,31 @@
+<div class="dashboard-container">
+    <h2>Tableau de Bord RED</h2>
+    
+    <div class="stats-grid">
+        <div class="card">
+            <h3>Total Commissions</h3>
+            <p id="total-gains">0 FCFA</p>
+        </div>
+        <div class="card highlight">
+            <h3>Disponible</h3>
+            <p id="solde-dispo">0 FCFA</p>
+        </div>
+        <div class="card">
+            <h3>En attente</h3>
+            <p id="en-attente">0 FCFA</p>
+        </div>
+    </div>
+
+    <div class="affiliate-box">
+        <h3>Ton Lien d'Affiliation</h3>
+        <div class="link-copy">
+            <input type="text" id="aff-link" readonly value="Génération en cours...">
+            <button onclick="copierLien()">Copier</button>
+        </div>
+        <p>Statut : <span id="status-badge" class="badge">Vérification...</span></p>
+    </div>
+
+    <div class="formation-access">
+        <button class="btn-formation" onclick="ouvrirFormation()">📖 Accéder à Ma Formation</button>
+    </div>
+</div>
