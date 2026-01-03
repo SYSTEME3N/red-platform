@@ -1,43 +1,54 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>RED DIGITAL</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RED - Plateforme Entrepreneur</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
-<div class="container">
-  <h1>RED DIGITAL</h1>
-  <p>Inscription & Parrainage</p>
+<div id="red-platform">
+    <nav class="nav-main">
+        <div class="logo">RED • RÉSEAU DES ENTREPRENEURS DIGITAUX</div>
+        <div id="nav-actions"></div>
+    </nav>
 
-  <input type="text" id="nom" placeholder="Nom">
-  <input type="text" id="prenom" placeholder="Prénom">
-  <input type="email" id="email" placeholder="Email">
-  <input type="tel" id="tel" placeholder="Téléphone">
-  <input type="text" id="parrain" placeholder="Code Parrain (facultatif)">
+    <div id="view-home" class="view active-view">
+        <div class="hero">
+            <h1>SYSTÈME RED OPÉRATIONNEL</h1>
+            <p>La base de données est connectée via Firebase Hosting.</p>
+            <button class="btn btn-red" onclick="showView('auth')">DÉMARRER</button>
+        </div>
+    </div>
 
-  <button onclick="submitForm()">S'inscrire</button>
+    <div id="view-auth" class="view">
+        <div class="form-box">
+            <h2 id="auth-title">Connexion</h2>
+            <input type="email" id="f-email" placeholder="Email">
+            <input type="password" id="f-pass" placeholder="Mot de passe">
+            <div id="reg-fields" style="display:none;">
+                <input type="text" id="f-name" placeholder="Nom Complet">
+                <input type="text" id="f-ref" placeholder="Code Parrain">
+            </div>
+            <button class="btn btn-red" id="auth-submit-btn" onclick="handleAuth()">VALIDER</button>
+            <p id="auth-toggle" onclick="toggleAuthMode()">Pas de compte ? S'inscrire</p>
+        </div>
+    </div>
 
-  <div id="result" class="success">
-    ✅ Inscription réussie  
-    <br><br>
-    <a href="https://checkout.moneroo.io/" target="_blank">Payer la formation</a>
-  </div>
-
-  <hr>
-
-  <button class="secondary" onclick="openParrainage()">📊 Voir les inscrits</button>
+    <div id="view-user" class="view">
+        <div class="profile-card">
+            <img id="u-photo" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-img">
+            <h2 id="u-name-display">...</h2>
+            <div id="u-balance">0 FCFA</div>
+            <p id="u-mycode-badge">Chargement du code...</p>
+            <button class="btn btn-red" onclick="logout()" style="width:auto;">DÉCONNEXION</button>
+        </div>
+    </div>
 </div>
 
-<div id="popup">
-  <div class="popup-box">
-    <span onclick="closeParrainage()">✖</span>
-    <h3>Liste des inscrits</h3>
-    <div id="list"></div>
-  </div>
-</div>
-
-<script type="module" src="script.js"></script>
+<script src="script.js"></script>
 </body>
-</html>
+              </html>
