@@ -1,41 +1,74 @@
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-<script>
+// Ta configuration Firebase spécifique
 const firebaseConfig = {
-  apiKey: "AIzaSyAXdPQBTqDHNoskOyx7xJFiIzvDrf1iZfM",
-  authDomain: "red-digital-eab79.firebaseapp.com",
-  databaseURL: "https://red-digital-eab79-default-rtdb.firebaseio.com/",
-  projectId: "red-digital-eab79",
-  storageBucket: "red-digital-eab79.appspot.com",
-  messagingSenderId: "548545414230",
-  appId: "1:548545414230:web:07586c989b972c623227f7"
+    apiKey: "AIzaSyAXdPQBTqDHNoskOyx7xJFiIzvDrf1iZfM",
+    authDomain: "red-digital-eab79.firebaseapp.com",
+    databaseURL: "https://red-digital-eab79-default-rtdb.firebaseio.com",
+    projectId: "red-digital-eab79",
+    storageBucket: "red-digital-eab79.firebasestorage.app",
+    messagingSenderId: "548545414230",
+    appId: "1:548545414230:web:07586c989b972c623227f7"
 };
 
+// Initialisation
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const rdb = firebase.database();
+let allUsers = [];
 
-function submitForm() {
-  const nom = document.getElementById("nom").value;
-  const prenom = document.getElementById("prenom").value;
-  const email = document.getElementById("email").value;
-  const tel = document.getElementById("tel").value;
-  const parrain = document.getElementById("parrain").value;
+// Badge de vérification
+const FB_ICON = `<span class="fb-verify">✔</span>`;
 
-  if (!nom || !prenom || !email || !tel) {
-    alert("Tous les champs sont obligatoires");
-    return;
-  }
+// Charger les données
+rdb.ref('users').on('value', (snapshot) => {
+    allUsers = [];
+    snapshot.forEach(child => {
+        allUsers.push({ id: child.key, ...child.val() });
+    });
+});
 
-  db.ref("inscriptions").push({
-    nom,
-    prenom,
-    email,
-    telephone: tel,
-    parrain,
-    date: new Date().toLocaleString()
-  });
-
-  document.getElementById("result").style.display = "block";
+function showView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active-view'));
+    document.getElementById('view-' + id).classList.add('active-view');
 }
-</script>
+
+function toggleAuthMode() {
+    const isLogin = document.getElementById('auth-title').innerText === 'Connexion';
+    document.getElementById('auth-title').innerText = isLogin ? 'Inscription' : 'Connexion';
+    document.getElementById('reg-fields').style.display = isLogin ? 'block' : 'none';
+    document.getElementById('auth-toggle').innerText = isLogin ? 'Déjà inscrit ? Connexion' : 'Pas de compte ? S\'inscrire';
+}
+
+function handleAuth() {
+    const email = document.getElementById('f-email').value.trim();
+    const pass = document.getElementById('f-pass').value.trim();
+    const mode = document.getElementById('auth-title').innerText;
+
+    if(!email || !pass) return alert("Champs vides !");
+
+    if(mode === 'Connexion') {
+        const user = allUsers.find(u => u.email === email && u.pass === pass);
+        if(user) loginUser(user);
+        else alert("Identifiants incorrects.");
+    } else {
+        const name = document.getElementById('f-name').value.trim();
+        const ref = document.getElementById('f-ref').value.trim();
+        if(!name || !ref) return alert("Complétez l'inscription !");
+
+        const myCode = "RED-" + Math.floor(1000 + Math.random() * 9000);
+        
+        rdb.ref('users').push({
+            name, email, pass, refCode: ref, myCode, balance: 0
+        }).then(() => {
+            alert("Compte créé !");
+            location.reload();
+        });
+    }
+}
+
+function loginUser(user) {
+    document.getElementById('u-name-display').innerHTML = user.name + FB_ICON;
+    document.getElementById('u-balance').innerText = user.balance + " FCFA";
+    document.getElementById('u-mycode-badge').innerText = "Mon Code: " + user.myCode;
+    showView('user');
+}
+
+function logout() { location.reload(); }
